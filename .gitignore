@@ -1,0 +1,11 @@
+# ファイル
+.DS_Store
+z_DB_original.php
+
+# ディレクトリ
+/tmp
+/_temp
+/node_modules/
+
+# ワイルドカード
+*.log
