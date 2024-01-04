@@ -14,7 +14,6 @@ article,aside,details,figcaption,figure,footer,header,main,menu,nav,section,summ
 ------------------------------------------------------*/
 
 /* Variable *******************************************/
-//各種カラー
 $light-gray:#f5f5f5;
 $gray:#eaeaea;
 $dark-gray:#ddd;
@@ -23,23 +22,20 @@ $link-hover:#e94;
 $link-hover-back:#444;
 $important:#f55;
 
-//スケジュール背景色
 $inoue-back:#08c;
-$takeyama-back:#0c8;
+$fujiwara-back:#0c8;
 $english-back:#c08;
 $other-back:#ccc;
 $schedule-op:0.5;
 
-//削除・更新ボタンの背景色
 $update-back:#6df;
 $delete-back:#faa;
 
-//その他
-$month-max:25; //スケジュール表示させる最大月数(の+1の数値)。★カレンダー表示数変更時には要変更
-$calendar-width:840 * ($month-max - 1); //カレンダーの全体幅の定義
+$month-max:25;
+$calendar-width:840 * ($month-max - 1);
 
 /* Origin *********************************************/
-@import url('https://fonts.googleapis.com/earlyaccess/notosansjp.css');          // Noto Sans JP
+@import url('https://fonts.googleapis.com/earlyaccess/notosansjp.css');
 body,input,textarea{
   color:#333;
   font-family:"Quattrocento", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", "メイリオ", Meiryo, "ＭＳ Ｐゴシック", Verdana, sans-serif;
@@ -55,7 +51,7 @@ ul,ol{ padding:0; margin:0 0 1em; }
 
 /* Layout *********************************************/
 .wrap{
-  background:url(../img_audio/wrap_back.png);
+  background:url(../assets/wrap_back.png);
   width:100%;
 }
 
@@ -158,7 +154,7 @@ $className:1;
   $fontSize:$fontSize+0.1;
 }
 
-.f20em{ font-size:2em; } //ループだと.f110になってしまうので20emのみ外に出してる
+.f20em{ font-size:2em; }
 .b{ font-weight:bold; }
 .tal-c{ text-align:center; }
 .val-m{ vertical-align:middle; }
@@ -340,7 +336,7 @@ input[type="submit"]{
     margin:78px 0 60px;
     position:relative;
     width:840px;
-    &.month3{ //★カレンダー表示数変更時には要変更
+    &.month3{
       .today{
           background:#f5f0e0;
       }
@@ -394,14 +390,13 @@ input[type="submit"]{
         .Inoue, .Inoue::before, .Inoue::after, .Inoue span{
           background:$inoue-back;
         }
-        .Fujiwara, .Fujiwara::before, .Fujiwara::after, .Fujiwara span,
-        .Takeyama, .Takeyama::before, .Takeyama::after, .Takeyama span{
-          background:$takeyama-back;
+        .Fujiwara, .Fujiwara::before, .Fujiwara::after, .Fujiwara span{
+          background:$fujiwara-back;
         }
-        .English, .English::before, .English::after, .English span{
+        .Hayami, .Hayami::before, .Hayami::after, .Hayami span{
           background:$english-back;
         }
-        .Other, .Other::before, .Other::after, .Other span{
+        .Takeyama, .Takeyama::before, .Takeyama::after, .Takeyama span{
           background:$other-back;
         }
         .schedule-about{
@@ -420,12 +415,12 @@ input[type="submit"]{
             position:relative;
             z-index:1;
           }
-          //予定が複数日の場合のループ。span.differenceは予定日の日数。土曜日をまたぐ場合は、そこでリセットされるため、最大でも6になる。
-          @for $i from 0 to 7 { //161009にここの0 to 30を0 to 7に変更。不具合が発生した場合は元に戻す。最大でも7になるはずなのでたぶん大丈夫
+
+          @for $i from 0 to 7 {
             &.difference#{$i} {
               position:relative;
               z-index:1;
-              //日数に応じてafter(薄いバー)のwidthを可変。薄いバーはマスの右端まで行かずに途中で止めるため-30px
+
               &::after{
                 content:"";
                 display:block;
@@ -436,27 +431,21 @@ input[type="submit"]{
                 height:19px;
                 opacity:$schedule-op;
               }
-              /*width:(120px*$i)-120px;
-              transform:translateX(40px * $i);*/
             }
           }
-          //span.saturday-differenceは、予定が土曜日～日曜日にまたぐ場合の予定開始日～土曜日までの日数
-          @for $i from 0 to 7 { //161009にここの0 to 30を0 to 7に変更。不具合が発生した場合は元に戻す。最大でも7になるはずなのでたぶん大丈夫
+
+          @for $i from 0 to 7 {
             &.saturday-difference#{$i} {
               z-index:1;
-              //土曜日の場合は右端で止めるため+8px
               &::after{
                 width:(120px*$i)+8px;
               }
-              /*width:(120px*$i)-120px;
-              transform:translateX(40px * $i);*/
             }
           }
-        }//span end
+        }
         i span{
           opacity:0;
         }
-        //i.sunday-differenceは、日曜日～予定終了日までの日数
         @for $i from 0 to 40 {
           i.sunday-difference#{$i} {
             content:"";
@@ -471,14 +460,12 @@ input[type="submit"]{
             z-index:1;
           }
         }
-        //i.sunday-startは日曜日～予定開始日までの日数
-        @for $i from 0 to 7 { //161009にここの0 to 30を0 to 7に変更。不具合が発生した場合は元に戻す。最大でも7になるはずなのでたぶん大丈夫
+        @for $i from 0 to 7 {
           i.sunday-start#{$i} {
             left:(-120px*$i)-30px;
           }
         }
 
-        //以下で使用する関数の定義
         @mixin test {
           content:"";
           display:inline-block;
@@ -488,7 +475,7 @@ input[type="submit"]{
           position:absolute;
           z-index:1;
         }
-        //span.bar1生成
+
         @for $i from 8 to 40 {
           i.sunday-difference#{$i} span.bar1{
             @include test;
@@ -497,7 +484,7 @@ input[type="submit"]{
             width:(120px*($i - 7))-30px;
           }
         }
-        //span.bar2生成
+
         @for $i from 15 to 40 {
           i.sunday-difference#{$i} span.bar2{
             @include test;
@@ -506,7 +493,7 @@ input[type="submit"]{
             width:(120px*($i - 14))-30px;
           }
         }
-        //before生成
+
         @for $i from 22 to 40 {
           i.sunday-difference#{$i}{
             &::before{
@@ -516,7 +503,7 @@ input[type="submit"]{
             }
           }
         }
-        //after生成
+
         @for $i from 29 to 40 {
           i.sunday-difference#{$i}{
             &::after{
@@ -530,11 +517,10 @@ input[type="submit"]{
         i.Inoue{
           background:$inoue-back;
         }
-        i.Fujiwara,
-        i.Takeyama{
-          background:$takeyama-back;
+        i.Fujiwara{
+          background:$fujiwara-back;
         }
-        i~span{ //バーがある場合、その開始日の下に別の予定が入ると空白ができてしまうため、上に寄せる
+        i~span{
           transform:translateY(-25px);
           &+i{
             transform:translateY(-25px);
@@ -560,7 +546,7 @@ input[type="submit"]{
           display:none;
         }
         .overlay{
-          background:url(../img_audio/overlay.png);
+          background:url(../assets/overlay.png);
           height:760px;
           left:0;
           margin:0;
@@ -571,7 +557,7 @@ input[type="submit"]{
           z-index:-1;
         }
         div.schedule-content{
-          background:url(../img_audio/schedule_back.png);
+          background:url(../assets/schedule_back.png);
           border:2px solid #666;
           color:#222;
           height:680px;
@@ -684,7 +670,6 @@ input[type="submit"]{
       th:nth-child(7), td:nth-child(7){
         color:#06c;
       }
-      //カレンダーの下にはみ出る薄いバーを非表示
       tr:nth-last-child(2) td i .bar1,
       tr:nth-last-child(2) td i .bar2,
       tr:nth-last-child(2) td i::before,
@@ -704,12 +689,10 @@ input[type="submit"]{
   }
   @for $s from 1 through $month-max{
     #tab-#{$s}:checked{
-      //月にチェックした際のラベルの背景や文字色
       &~ .tablink label[for="tab-#{$s}"]{
         background:#222;
         color:#fff;
       }
-      //チェックした月のカレンダーに移動させるためのtranslate
       $x:-840 * ($s - 1);
       $y:-415 * ($s - 1);
       &~ div .calendar-inner{
@@ -718,19 +701,17 @@ input[type="submit"]{
       }
     }
   }
-  //$sに2~月数のマックス数値を順に代入
+
   @for $s from 2 through $month-max{
     $m:$s - 1;
-    //現在表示中の月の前の月に保存されている予定に対するスタイルを指定($sが10月なら$mは9月)
+
     #tab-#{$s}:checked ~ div .month#{$m}{
-      //最後から2番目の週
       table tr:nth-last-child(2),
       table tr:nth-last-child(3):nth-child(4),
       table tr:nth-last-child(4):nth-child(3),
       table tr:nth-last-child(5):nth-child(2){
-        //$ssに1~7までの数値を代入（月曜日1～土曜日7）
         @for $ss from 1 through 7{      
-          $lt:(7 - $ss) * 120 + 90; //月曜なら6*120+90pxに、土曜なら0*120+90px(つまり90px)になるよう計算
+          $lt:(7 - $ss) * 120 + 90;
           td:nth-child(#{$ss}) i{
             left:#{$lt}px;
             opacity:0.2;
@@ -746,9 +727,8 @@ input[type="submit"]{
       table tr:nth-last-child(4):nth-child(4),
       table tr:nth-last-child(5):nth-child(3),
       table tr:nth-last-child(6):nth-child(2){
-        //$ssに1~7までの数値を代入（月曜日1～土曜日7）
         @for $ss from 1 through 7{      
-          $lt:(7 - $ss) * 120 + 90; //月曜なら6*120+90pxに、土曜なら0*120+90px(つまり90px)になるよう計算
+          $lt:(7 - $ss) * 120 + 90;
           td:nth-child(#{$ss}) i{
             left:#{$lt}px;
             opacity:0.2;
@@ -760,7 +740,6 @@ input[type="submit"]{
         }
       }
 
-      //2016年7月や10月など曜日の関係でカレンダーが6行(先頭曜日部分の行も含め7行)になる場合は、次の月に表示されるiのtopを-25pxにする
       table tr:nth-child(6){
         td i{
           top:-24px !important;
@@ -828,7 +807,7 @@ input[type="submit"]{
 ::-webkit-calendar-picker-indicator{
   width:16px;
   color:transparent;
-    background: url("calendar_icon.png") no-repeat;
+    background: url("../assets/calendar_icon.png") no-repeat;
     background-size: 16px;
     padding: 2px 2px 4px 1px;
 }
@@ -1021,24 +1000,3 @@ input[type="submit"]{
   }
 }
 
-
-
-
-
-/******************#overview DOC
-テストサイト「●●」のスタイルガイド。
-***********************************/
-
-/******************#styleguide サンプル見出し1
-サンプルの見出しスタイル
-hoverすると青くデカくなる
-```
-<h1>見出し1</h1>
-```
-***********************************/
-
-/******************#styleguide サンプル見出し2
-```
-<h2>見出し2</h2>
-```
-***********************************/
